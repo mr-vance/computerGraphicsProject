@@ -1,14 +1,24 @@
 # 3D Game Development with Three.js
 
+<div align="center">
+  <img src="images/among-us-among.gif" alt="Image Description">
+</div>
+
+
 ## Table of Contents
-1. [Introduction](#introduction)
-2. [Three.js](#threejs)
-3. [Grading](#grading)
-4. [Group Members](#group-members)
-5. [Assessment](#assessment)
-6. [Individual & Group Assessment](#individual--group-assessment)
-7. [Schedule](#schedule)
-8. [Resources](#resources)
+- [3D Game Development with Three.js](#3d-game-development-with-threejs)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Three.js](#threejs)
+  - [Grading](#grading)
+  - [Group Members](#group-members)
+  - [Assessment](#assessment)
+    - [Alpha](#alpha)
+    - [Beta](#beta)
+    - [Final Release](#final-release)
+  - [Individual \& Group Assessment](#individual--group-assessment)
+  - [Schedule](#schedule)
+  - [Resources](#resources)
 
 ## Introduction
 In this project, you will work in teams of 4-5 to build a 3D computer game with 3 levels/stages that run in the browser (Chrome on Ubuntu) using the Three.js graphics framework. Your game should demonstrate mastery of various technical aspects of graphics, for example, hierarchical modelling, viewing and cameras, lighting and materials. Beyond these basic requirements, you are free to design any 3D game that you like. There are grades allocated to polish (have you put effort into the look and feel of your game beyond what HTML and Three.js give you by default) and innovation (have you implemented something that is not obvious – e.g. networking, multi-player, special effects, novel models, animated models etc.). Your final game should be playable from LAMP.
