@@ -10,12 +10,12 @@
 ![Git](https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub license](https://img.shields.io/github/license/NikhilNamal17/popular-movie-quotes.svg?style=for-the-badge&logo=github)
 
-## 3D Game Development with Three.js
+## Description
 
 This project is a 3D computer game created using the Three.js graphics framework. It consists of three levels/stages that can be played in a web browser, specifically Chrome on Ubuntu. The game showcases various technical aspects of graphics, including hierarchical modeling, camera and lighting systems, and materials. While meeting these fundamental requirements, the project also emphasizes design, polish, and innovation, allowing for creative game development beyond the default capabilities of HTML and Three.js.
 
 
-### Contributors
+## Contributors
 
 | Name               | GitHub Username     |
 |--------------------|---------------------|
