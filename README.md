@@ -14,7 +14,6 @@
 
 This project is a 3D computer game created using the Three.js graphics framework. It consists of three levels/stages that can be played in a web browser, specifically Chrome on Ubuntu. The game showcases various technical aspects of graphics, including hierarchical modeling, camera and lighting systems, and materials. While meeting these fundamental requirements, the project also emphasizes design, polish, and innovation, allowing for creative game development beyond the default capabilities of HTML and Three.js.
 
-For more information about Three.js, please visit the [Three.js Official Website](https://threejs.org/editor/). Refer to their "Getting Started" and "Examples" pages for assistance. This project leverages Three.js's scenegraph API, enabling the loading and creation of 3D models, integration of physics engines, and management of lights and cameras. It's crucial to carefully consider the hierarchy of objects within the game world for both design sensibility and motivation.
 
 ### Contributors
 
