@@ -38,3 +38,5 @@ This project will undergo three stages:
 - Final project due on the week of October 24th, 2023.
 
 Various online resources, such as Google, YouTube, OpenCourseWare, and StackOverflow, to support the project development were used.
+
+![readme Quotes](https://quotes-github-readme.vercel.app/api?type=horizontal)
