@@ -12,7 +12,7 @@
 
 ## Description
 
-This project is a 3D computer game created using the Three.js graphics framework. It consists of three levels/stages that can be played in a web browser, specifically Chrome on Ubuntu. The game showcases various technical aspects of graphics, including hierarchical modeling, camera and lighting systems, and materials. While meeting these fundamental requirements, the project also emphasizes design, polish, and innovation, allowing for creative game development beyond the default capabilities of HTML and Three.js.
+This project is a 3D computer game created using the Three.js graphics framework. It consists of three levels/stages that can be played in a web browser. The game showcases various technical aspects of graphics, including hierarchical modeling, camera and lighting systems, and materials. While meeting these fundamental requirements, the project also emphasizes design, polish, and innovation, allowing for creative game development beyond the default capabilities of HTML and Three.js.
 
 
 ## Contributors
