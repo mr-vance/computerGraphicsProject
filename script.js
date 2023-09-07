@@ -1,5 +1,8 @@
 const counterDOM = document.getElementById('counter');  
 const endDOM = document.getElementById('end');  
+const popup = document.getElementById('popup');
+const resumeButton = document.getElementById('resume-button');
+const quitButton = document.getElementById('quit-button');
 
 const scene = new THREE.Scene();
 
@@ -56,6 +59,8 @@ const stepTime = 200; // Miliseconds it takes for the chicken to take a step for
 let lanes;
 let currentLane;
 let currentColumn;
+let gameState = 'playing'; // Initial game state is 'playing'
+let gameOver = false;
 
 let previousTimestamp;
 let startMoving;
@@ -66,6 +71,8 @@ const carFrontTexture = new Texture(40,80,[{x: 0, y: 10, w: 30, h: 60 }]);
 const carBackTexture = new Texture(40,80,[{x: 10, y: 10, w: 30, h: 60 }]);
 const carRightSideTexture = new Texture(110,40,[{x: 10, y: 0, w: 50, h: 30 }, {x: 70, y: 0, w: 30, h: 30 }]);
 const carLeftSideTexture = new Texture(110,40,[{x: 10, y: 10, w: 50, h: 30 }, {x: 70, y: 10, w: 30, h: 30 }]);
+
+
 
 const truckFrontTexture = new Texture(30,30,[{x: 15, y: 0, w: 10, h: 30 }]);
 const truckRightSideTexture = new Texture(25,30,[{x: 0, y: 15, w: 10, h: 10 }]);
@@ -451,6 +458,8 @@ document.querySelector("#retry").addEventListener("click", () => {
   endDOM.style.visibility = 'hidden';
 });
 
+
+
 document.getElementById('forward').addEventListener("click", () => move('forward'));
 
 document.getElementById('backward').addEventListener("click", () => move('backward'));
@@ -460,28 +469,60 @@ document.getElementById('left').addEventListener("click", () => move('left'));
 document.getElementById('right').addEventListener("click", () => move('right'));
 
 window.addEventListener("keydown", event => {
-  if (event.keyCode == '38') {
-    // up arrow
-    move('forward');
+  if (gameOver){
+    return; // Don't allow movements if the game is over
+  } else{
+    if (event.keyCode == '38') {
+      // up arrow
+      move('forward');
+    }
+    else if(event.key === 'Escape'){
+      if (popup.classList.contains('hidden')) {
+        showPopup();
+      } else {
+        hidePopup();
+      }
+    }
+    else if (event.keyCode == '40') {
+      // down arrow
+      move('backward');
+    }
+    else if(event.key === "C" || event.key === "c"){
+      toggleCameraView();
+    }
+    else if (event.keyCode == '37') {
+      // left arrow
+      move('left');
+    }
+    else if (event.keyCode == '39') {
+      // right arrow
+      move('right');
+    }
   }
-  else if (event.keyCode == '40') {
-    // down arrow
-    move('backward');
-  }
-  else if(event.key === "C" || event.key === "c"){
-    toggleCameraView();
-  }
-  else if (event.keyCode == '37') {
-    // left arrow
-    move('left');
-  }
-  else if (event.keyCode == '39') {
-    // right arrow
-    move('right');
-  }
+
 });
 
+resumeButton.addEventListener('click', () => {
+  hidePopup();
+  // Resume game logic here
+});
+
+quitButton.addEventListener('click', () => {
+  hidePopup();
+  window.location.href = 'index.html';
+  // Add code to quit the game or navigate to a different page
+});
+
+function showPopup() {
+  popup.classList.remove('hidden');
+}
+
+function hidePopup() {
+  popup.classList.add('hidden');
+}
+
 function move(direction) {
+  if (gameOver) return; // Don't allow movements if the game is over
   const finalPositions = moves.reduce((position,move) => {
     if(move === 'forward') return {lane: position.lane+1, column: position.column};
     if(move === 'backward') return {lane: position.lane-1, column: position.column};
@@ -643,6 +684,7 @@ function animate(timestamp) {
       const carMaxX = vechicle.position.x + vechicleLength*zoom/2;
       if(chickenMaxX > carMinX && chickenMinX < carMaxX) {
         endDOM.style.visibility = 'visible';
+        gameOver = true; // Set the game over flag to true
       }
     });
 

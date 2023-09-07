@@ -1,54 +1,59 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Road Cross</title>
-  <link rel="stylesheet" href="./style.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="help.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100&display=swap" rel="stylesheet">
+    <title>Road Cross</title>
 </head>
 <body>
-<!-- partial:index.partial.html -->
-<div id="counter">0</div>
-    
-<div id="controlls">
-  <div>
-    <button id="forward">
-      <svg width="30" height="30" viewBox="0 0 10 10">
-        <g transform="rotate(0, 5,5)">
-          <path d="M5,4 L7,6 L3,6 L5,4" />
-        </g>
-      </svg>
-    </button>
-    <button id="left">
-      <svg width="30" height="30" viewBox="0 0 10 10">
-        <g transform="rotate(-90, 5,5)">
-          <path d="M5,4 L7,6 L3,6 L5,4" />
-        </g>
-      </svg>
-    </button>
-    <button id="backward">
-      <svg width="30" height="30" viewBox="0 0 10 10">
-        <g transform="rotate(180, 5,5)">
-          <path d="M5,4 L7,6 L3,6 L5,4" />
-        </g>
-      </svg>
-    </button>
-    <button id="right">
-      <svg width="30" height="30" viewBox="0 0 10 10">
-        <g transform="rotate(90, 5,5)">
-          <path d="M5,4 L7,6 L3,6 L5,4" />
-        </g>
-      </svg>
-    </button>
-  </div>
-</div>
 
-<div id="end">
-  <button id="retry">Retry</button>
-</div>
-<!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/99/three.min.js'></script>
-  <script src="./script.js"></script>
+	<div class="container">
+		<h1>Road Cross Adventure</h1>
+        <!-- Background image of the game -->
+        <div class="game-image">
+            <!-- Add any game-related content here -->
+        </div>
 
+        <!-- Buttons on top of the image -->
+        <div class="button-container">
+            <button id="howToPlayBtn">Help</button>
+			    <!-- Create a pop-up card for instructions (hidden by default) -->
+				<div id="popupCard" class="popup-card">
+					<h2>How to Play</h2>
+					<ul>
+						<li>Use the keys to move your character.</li>
+						<li>Press the spacebar to jump and navigate obstacles.</li>
+						<li>Use C to change Camera</li>
+						<!-- Add more instructions here -->
+					</ul>
+
+					<h2>Developers</h2>
+					<p>This game was developed by a group of Computer Science students from Wits University. For more details refer to the <a href="https://github.com/mr-vance/computerGraphicsProject#readme" target="_blank">README</a>.</p>
+					<ol>
+						<li>Nyiko Mthombeni	</li>
+						<li>Nduduzo Shoba	</li>
+						<li>Sibusiso Mfana</li>
+						<li>Faith Mokgalaka	</li>
+						<li>Vance Muchongo	</li>
+						<!-- Add more instructions here -->
+					</ol>
+
+					<h2>Credits</h2>
+					<p>This game was build on top of the code written by <a href="https://codepen.io/HunorMarton/pen/JwWLJo" target="_blank">Hunor Marton</a> </p>
+					<!-- Add a "Close" button to close the pop-up -->
+					<button id="closeBtn">Close</button>
+				</div>
+
+            <a href="game.html"><button id="startGameBtn">Start Game</button></a>
+        </div>
+    </div>
+
+    <!-- Include your game canvas and other game elements here -->
+
+    <script src="help.js"></script>
 </body>
 </html>
