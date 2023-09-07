@@ -1,3 +1,23 @@
+
+/*
+=======================================
+   TABLE OF CONTENTS
+=======================================
+1. Variable Declarations and Initialization
+2. Scene and Lighting Setup
+3. Textures Creation
+4. Lanes and Lane Generation Functions
+5. Vehicle, Chicken, and Road Object Creation Functions
+6. Event Listeners
+7. Animation and Rendering Loop
+8. Initialization
+=======================================
+*/
+
+/**********************************************
+ * 1.  START OF VARIABLE DECLARATIONS AND INITIALIZATION
+ **********************************************/
+
 const counterDOM = document.getElementById('counter');  
 const endDOM = document.getElementById('end');  
 
@@ -24,7 +44,8 @@ const positionWidth = 42;
 const columns = 17;
 const boardWidth = positionWidth*columns;
 
-const stepTime = 200; // Miliseconds it takes for the chicken to take a step forward, backward, left or right
+// Miliseconds it takes for the chicken to take a step forward, backward, left or right
+const stepTime = 200; 
 
 let lanes;
 let currentLane;
@@ -34,6 +55,16 @@ let previousTimestamp;
 let startMoving;
 let moves;
 let stepStartTimestamp;
+
+/**********************************************
+ * 1. END OF VARIABLE DECLARATIONS AND INITIALIZATION
+ **********************************************/
+
+
+
+/**********************************************
+ * 2.  START OF SCENE, LIGHTING ANS SETUP
+ **********************************************/
 
 const carFrontTexture = new Texture(40,80,[{x: 0, y: 10, w: 30, h: 60 }]);
 const carBackTexture = new Texture(40,80,[{x: 10, y: 10, w: 30, h: 60 }]);
@@ -62,6 +93,8 @@ const addLane = () => {
 const chicken = new Chicken();
 scene.add( chicken );
 
+
+
 hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
 scene.add(hemiLight)
 
@@ -81,9 +114,6 @@ dirLight.shadow.camera.right = d;
 dirLight.shadow.camera.top = d;
 dirLight.shadow.camera.bottom = - d;
 
-// var helper = new THREE.CameraHelper( dirLight.shadow.camera );
-// var helper = new THREE.CameraHelper( camera );
-// scene.add(helper)
 
 backLight = new THREE.DirectionalLight(0x000000, .4);
 backLight.position.set(200, 200, 50);
@@ -127,6 +157,15 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
+
+/**********************************************
+ * 2.  END OF SCENE, LIGHTING ANS SETUP
+ **********************************************/
+
+
+/**********************************************
+ * 3.  START OF TEXTURES CREATIONS
+ **********************************************/
 
 function Texture(width, height, rects) {
   const canvas = document.createElement( "canvas" );
@@ -346,6 +385,17 @@ function Grass() {
   return grass;
 }
 
+/**********************************************
+ * 3.  END OF TEXTURES CREATIONS
+ **********************************************/
+
+
+
+
+/**********************************************
+ * 4.  START OF LANES AND LANE GENERATION FUCNTION
+ **********************************************/
+
 function Lane(index) {
   this.index = index;
   this.type = index <= 0 ? 'field' : laneTypes[Math.floor(Math.random()*laneTypes.length)];
@@ -418,6 +468,16 @@ function Lane(index) {
   }
 }
 
+/**********************************************
+ * 4.  END OF LANES AND LANE GENERATION FUCNTION
+ **********************************************/
+
+
+
+/**********************************************
+ * 5.  START OF EVENT LISTENERS AND CONTROLS
+ **********************************************/
+
 document.querySelector("#retry").addEventListener("click", () => {
   lanes.forEach(lane => scene.remove( lane.mesh ));
   initaliseValues();
@@ -481,6 +541,15 @@ function move(direction) {
   }
   moves.push(direction);
 }
+
+/**********************************************
+ * 5.  END OF EVENT LISTENERS AND CONTROLS
+ **********************************************/
+
+
+/**********************************************
+ * 6.  START OF ANIMATION AND RENDERING
+ **********************************************/
 
 function animate(timestamp) {
   requestAnimationFrame( animate );
@@ -596,3 +665,7 @@ function animate(timestamp) {
 }
 
 requestAnimationFrame( animate );
+
+/**********************************************
+ * 6.  END OF ANIMATION AND RENDERING
+ **********************************************/
