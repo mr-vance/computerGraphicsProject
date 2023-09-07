@@ -1,23 +1,3 @@
-
-/*
-=======================================
-   TABLE OF CONTENTS
-=======================================
-1. Variable Declarations and Initialization
-2. Scene and Lighting Setup
-3. Textures Creation
-4. Lanes and Lane Generation Functions
-5. Vehicle, Chicken, and Road Object Creation Functions
-6. Event Listeners
-7. Animation and Rendering Loop
-8. Initialization
-=======================================
-*/
-
-/**********************************************
- * 1.  START OF VARIABLE DECLARATIONS AND INITIALIZATION
- **********************************************/
-
 const counterDOM = document.getElementById('counter');  
 const endDOM = document.getElementById('end');  
 
@@ -36,6 +16,33 @@ camera.position.y = initialCameraPositionY;
 camera.position.x = initialCameraPositionX;
 camera.position.z = distance;
 
+// Create a boolean flag to track the camera view
+let isTopView = false;
+
+// Function to toggle between top view and default view
+function toggleCameraView() {
+  if (isTopView) {
+    // Switch to the default view
+    camera.rotation.x = 50 * Math.PI / 180;
+    camera.rotation.y = 20 * Math.PI / 180;
+    camera.rotation.z = 10 * Math.PI / 180;
+    const initialCameraPositionY = -Math.tan(camera.rotation.x) * distance;
+    const initialCameraPositionX = Math.tan(camera.rotation.y) * Math.sqrt(distance ** 2 + initialCameraPositionY ** 2);
+    camera.position.y = initialCameraPositionY;
+    camera.position.x = initialCameraPositionX;
+    camera.position.z = distance;
+    isTopView = false;
+  } else {
+    // Switch to the top view
+    camera.rotation.x = 0;
+    camera.rotation.y = 0;
+    camera.rotation.z = 0;
+    camera.position.set(0, 0, 500); // You can adjust the top view camera position as needed
+    isTopView = true;
+  }
+}
+
+
 const zoom = 2;
 
 const chickenSize = 15;
@@ -44,8 +51,7 @@ const positionWidth = 42;
 const columns = 17;
 const boardWidth = positionWidth*columns;
 
-// Miliseconds it takes for the chicken to take a step forward, backward, left or right
-const stepTime = 200; 
+const stepTime = 200; // Miliseconds it takes for the chicken to take a step forward, backward, left or right
 
 let lanes;
 let currentLane;
@@ -55,16 +61,6 @@ let previousTimestamp;
 let startMoving;
 let moves;
 let stepStartTimestamp;
-
-/**********************************************
- * 1. END OF VARIABLE DECLARATIONS AND INITIALIZATION
- **********************************************/
-
-
-
-/**********************************************
- * 2.  START OF SCENE, LIGHTING ANS SETUP
- **********************************************/
 
 const carFrontTexture = new Texture(40,80,[{x: 0, y: 10, w: 30, h: 60 }]);
 const carBackTexture = new Texture(40,80,[{x: 10, y: 10, w: 30, h: 60 }]);
@@ -93,8 +89,6 @@ const addLane = () => {
 const chicken = new Chicken();
 scene.add( chicken );
 
-
-
 hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
 scene.add(hemiLight)
 
@@ -114,6 +108,9 @@ dirLight.shadow.camera.right = d;
 dirLight.shadow.camera.top = d;
 dirLight.shadow.camera.bottom = - d;
 
+// var helper = new THREE.CameraHelper( dirLight.shadow.camera );
+// var helper = new THREE.CameraHelper( camera );
+// scene.add(helper)
 
 backLight = new THREE.DirectionalLight(0x000000, .4);
 backLight.position.set(200, 200, 50);
@@ -157,15 +154,6 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
-
-/**********************************************
- * 2.  END OF SCENE, LIGHTING ANS SETUP
- **********************************************/
-
-
-/**********************************************
- * 3.  START OF TEXTURES CREATIONS
- **********************************************/
 
 function Texture(width, height, rects) {
   const canvas = document.createElement( "canvas" );
@@ -385,17 +373,6 @@ function Grass() {
   return grass;
 }
 
-/**********************************************
- * 3.  END OF TEXTURES CREATIONS
- **********************************************/
-
-
-
-
-/**********************************************
- * 4.  START OF LANES AND LANE GENERATION FUCNTION
- **********************************************/
-
 function Lane(index) {
   this.index = index;
   this.type = index <= 0 ? 'field' : laneTypes[Math.floor(Math.random()*laneTypes.length)];
@@ -468,16 +445,6 @@ function Lane(index) {
   }
 }
 
-/**********************************************
- * 4.  END OF LANES AND LANE GENERATION FUCNTION
- **********************************************/
-
-
-
-/**********************************************
- * 5.  START OF EVENT LISTENERS AND CONTROLS
- **********************************************/
-
 document.querySelector("#retry").addEventListener("click", () => {
   lanes.forEach(lane => scene.remove( lane.mesh ));
   initaliseValues();
@@ -500,6 +467,9 @@ window.addEventListener("keydown", event => {
   else if (event.keyCode == '40') {
     // down arrow
     move('backward');
+  }
+  else if(event.key === "C" || event.key === "c"){
+    toggleCameraView();
   }
   else if (event.keyCode == '37') {
     // left arrow
@@ -542,14 +512,8 @@ function move(direction) {
   moves.push(direction);
 }
 
-/**********************************************
- * 5.  END OF EVENT LISTENERS AND CONTROLS
- **********************************************/
+let topViewCameraPosition = new THREE.Vector3(0, 0, 500); // Initialize the top view camera position
 
-
-/**********************************************
- * 6.  START OF ANIMATION AND RENDERING
- **********************************************/
 
 function animate(timestamp) {
   requestAnimationFrame( animate );
@@ -647,6 +611,28 @@ function animate(timestamp) {
     }
   }
 
+
+  if (isTopView) {
+    // Update the top view camera position to follow the chicken
+    topViewCameraPosition.x = chicken.position.x;
+    topViewCameraPosition.y = chicken.position.y;
+
+    // Set the camera position to the updated top view camera position
+    camera.position.copy(topViewCameraPosition);
+
+    // Look at the chicken
+    camera.lookAt(chicken.position);
+  }
+
+  // Render the grass before rendering the chicken
+  renderer.render(scene, camera);
+
+  if (!isTopView) {
+    // If not in top view, render the chicken again after rendering the grass
+    renderer.render(scene, camera);
+  }
+
+  
   // Hit test
   if(lanes[currentLane].type === 'car' || lanes[currentLane].type === 'truck') {
     const chickenMinX = chicken.position.x - chickenSize*zoom/2;
@@ -665,7 +651,3 @@ function animate(timestamp) {
 }
 
 requestAnimationFrame( animate );
-
-/**********************************************
- * 6.  END OF ANIMATION AND RENDERING
- **********************************************/
