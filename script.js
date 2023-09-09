@@ -1,50 +1,17 @@
+import { Car } from "./car.js";
+import { Wheel } from "./wheel.js";
+import * as textureModule from "./texture.js"
+import * as cameraModule from "./camera.js"
+
+
+
 const counterDOM = document.getElementById('counter');  
-const endDOM = document.getElementById('end');  
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-
+const endDOM = document.getElementById('end'); 
 const scene = new THREE.Scene();
-
-const distance = 500;
-const camera = new THREE.OrthographicCamera( window.innerWidth/-2, window.innerWidth/2, window.innerHeight / 2, window.innerHeight / -2, 0.1, 10000 );
-
-camera.rotation.x = 50*Math.PI/180;
-camera.rotation.y = 20*Math.PI/180;
-camera.rotation.z = 10*Math.PI/180;
-
-const initialCameraPositionY = -Math.tan(camera.rotation.x)*distance;
-const initialCameraPositionX = Math.tan(camera.rotation.y)*Math.sqrt(distance**2 + initialCameraPositionY**2);
-camera.position.y = initialCameraPositionY;
-camera.position.x = initialCameraPositionX;
-camera.position.z = distance;
-
-// Create a boolean flag to track the camera view
-let isTopView = false;
-
-// Function to toggle between top view and default view
-function toggleCameraView() {
-  if (isTopView) {
-    // Switch to the default view
-    camera.rotation.x = 50 * Math.PI / 180;
-    camera.rotation.y = 20 * Math.PI / 180;
-    camera.rotation.z = 10 * Math.PI / 180;
-    const initialCameraPositionY = -Math.tan(camera.rotation.x) * distance;
-    const initialCameraPositionX = Math.tan(camera.rotation.y) * Math.sqrt(distance ** 2 + initialCameraPositionY ** 2);
-    camera.position.y = initialCameraPositionY;
-    camera.position.x = initialCameraPositionX;
-    camera.position.z = distance;
-    isTopView = false;
-  } else {
-    // Switch to the top view
-    camera.rotation.x = 0;
-    camera.rotation.y = 0;
-    camera.rotation.z = 0;
-    camera.position.set(0, 0, 500); // You can adjust the top view camera position as needed
-    isTopView = true;
-  }
-}
 
 // Define a variable to track the game's pause state
 let isGamePaused = false;
+
 const modal = document.getElementById("myModal");
 
 // Function to toggle the modal's visibility
@@ -57,7 +24,7 @@ const zoom = 2;
 
 const chickenSize = 15;
 
-const positionWidth = 42;
+const positionWidth = 45;
 const columns = 17;
 const boardWidth = positionWidth*columns;
 
@@ -73,16 +40,6 @@ let startMoving;
 let moves;
 let stepStartTimestamp;
 
-const carFrontTexture = new Texture(40,80,[{x: 0, y: 10, w: 30, h: 60 }]);
-const carBackTexture = new Texture(40,80,[{x: 10, y: 10, w: 30, h: 60 }]);
-const carRightSideTexture = new Texture(110,40,[{x: 10, y: 0, w: 50, h: 30 }, {x: 70, y: 0, w: 30, h: 30 }]);
-const carLeftSideTexture = new Texture(110,40,[{x: 10, y: 10, w: 50, h: 30 }, {x: 70, y: 10, w: 30, h: 30 }]);
-
-
-
-const truckFrontTexture = new Texture(30,30,[{x: 15, y: 0, w: 10, h: 30 }]);
-const truckRightSideTexture = new Texture(25,30,[{x: 0, y: 15, w: 10, h: 10 }]);
-const truckLeftSideTexture = new Texture(25,30,[{x: 0, y: 5, w: 10, h: 10 }]);
 
 const generateLanes = () => [-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9].map((index) => {
   const lane = new Lane(index);
@@ -150,8 +107,8 @@ const initaliseValues = () => {
   chicken.position.x = 0;
   chicken.position.y = 0;
 
-  camera.position.y = initialCameraPositionY;
-  camera.position.x = initialCameraPositionX;
+  cameraModule.camera.position.y = cameraModule.initialCameraPositionY;
+  cameraModule.camera.position.x = cameraModule.initialCameraPositionX;
 
   dirLight.position.x = initialDirLightPositionX;
   dirLight.position.y = initialDirLightPositionY;
@@ -163,77 +120,12 @@ const renderer = new THREE.WebGLRenderer({
   alpha: true,
   antialias: true
 });
+
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
-function Texture(width, height, rects) {
-  const canvas = document.createElement( "canvas" );
-  canvas.width = width;
-  canvas.height = height;
-  const context = canvas.getContext( "2d" );
-  context.fillStyle = "#ffffff";
-  context.fillRect( 0, 0, width, height );
-  context.fillStyle = "rgba(0,0,0,0.6)";  
-  rects.forEach(rect => {
-    context.fillRect(rect.x, rect.y, rect.w, rect.h);
-  });
-  return new THREE.CanvasTexture(canvas);
-}
-
-function Wheel() {
-  const wheel = new THREE.Mesh( 
-    new THREE.BoxBufferGeometry( 12*zoom, 33*zoom, 12*zoom ), 
-    new THREE.MeshLambertMaterial( { color: 0x333333, flatShading: true } ) 
-  );
-  wheel.position.z = 6*zoom;
-  return wheel;
-}
-
-function Car() {
-  const car = new THREE.Group();
-  const color = vechicleColors[Math.floor(Math.random() * vechicleColors.length)];
-  
-  const main = new THREE.Mesh(
-    new THREE.BoxBufferGeometry( 60*zoom, 30*zoom, 15*zoom ), 
-    new THREE.MeshPhongMaterial( { color, flatShading: true } )
-  );
-  main.position.z = 12*zoom;
-  main.castShadow = true;
-  main.receiveShadow = true;
-  car.add(main)
-  
-  const cabin = new THREE.Mesh(
-    new THREE.BoxBufferGeometry( 33*zoom, 24*zoom, 12*zoom ), 
-    [
-      new THREE.MeshPhongMaterial( { color: 0xcccccc, flatShading: true, map: carBackTexture } ),
-      new THREE.MeshPhongMaterial( { color: 0xcccccc, flatShading: true, map: carFrontTexture } ),
-      new THREE.MeshPhongMaterial( { color: 0xcccccc, flatShading: true, map: carRightSideTexture } ),
-      new THREE.MeshPhongMaterial( { color: 0xcccccc, flatShading: true, map: carLeftSideTexture } ),
-      new THREE.MeshPhongMaterial( { color: 0xcccccc, flatShading: true } ), // top
-      new THREE.MeshPhongMaterial( { color: 0xcccccc, flatShading: true } ) // bottom
-    ]
-  );
-  cabin.position.x = 6*zoom;
-  cabin.position.z = 25.5*zoom;
-  cabin.castShadow = true;
-  cabin.receiveShadow = true;
-  car.add( cabin );
-  
-  const frontWheel = new Wheel();
-  frontWheel.position.x = -18*zoom;
-  car.add( frontWheel );
-
-  const backWheel = new Wheel();
-  backWheel.position.x = 18*zoom;
-  car.add( backWheel );
-
-  car.castShadow = true;
-  car.receiveShadow = false;
-  
-  return car;  
-}
 
 function Truck() {
   const truck = new THREE.Group();
@@ -261,9 +153,9 @@ function Truck() {
     new THREE.BoxBufferGeometry( 25*zoom, 30*zoom, 30*zoom ), 
     [
       new THREE.MeshPhongMaterial( { color, flatShading: true } ), // back
-      new THREE.MeshPhongMaterial( { color, flatShading: true, map: truckFrontTexture } ),
-      new THREE.MeshPhongMaterial( { color, flatShading: true, map: truckRightSideTexture } ),
-      new THREE.MeshPhongMaterial( { color, flatShading: true, map: truckLeftSideTexture } ),
+      new THREE.MeshPhongMaterial( { color, flatShading: true, map: textureModule.truckFrontTexture } ),
+      new THREE.MeshPhongMaterial( { color, flatShading: true, map: textureModule.truckRightSideTexture } ),
+      new THREE.MeshPhongMaterial( { color, flatShading: true, map: textureModule.truckLeftSideTexture } ),
       new THREE.MeshPhongMaterial( { color, flatShading: true } ), // top
       new THREE.MeshPhongMaterial( { color, flatShading: true } ) // bottom
     ]
@@ -581,7 +473,7 @@ function animate(timestamp) {
     switch(moves[0]) {
       case 'forward': {
         const positionY = currentLane*positionWidth*zoom + moveDeltaDistance;
-        camera.position.y = initialCameraPositionY + positionY; 
+        cameraModule.camera.position.y = cameraModule.initialCameraPositionY + positionY; 
         dirLight.position.y = initialDirLightPositionY + positionY; 
         chicken.position.y = positionY; // initial chicken position is 0
 
@@ -590,8 +482,8 @@ function animate(timestamp) {
       }
       case 'backward': {
         positionY = currentLane*positionWidth*zoom - moveDeltaDistance
-        camera.position.y = initialCameraPositionY + positionY;
-        dirLight.position.y = initialDirLightPositionY + positionY; 
+        cameraModule.camera.position.y = cameraModule.initialCameraPositionY + positionY;
+        dirLight.position.y = cameraModule.initialDirLightPositionY + positionY; 
         chicken.position.y = positionY;
 
         chicken.position.z = jumpDeltaDistance;
@@ -599,7 +491,7 @@ function animate(timestamp) {
       }
       case 'left': {
         const positionX = (currentColumn*positionWidth+positionWidth/2)*zoom -boardWidth*zoom/2 - moveDeltaDistance;
-        camera.position.x = initialCameraPositionX + positionX;     
+        cameraModule.camera.position.x = cameraModule.initialCameraPositionX + positionX;     
         dirLight.position.x = initialDirLightPositionX + positionX; 
         chicken.position.x = positionX; // initial chicken position is 0
         chicken.position.z = jumpDeltaDistance;
@@ -607,7 +499,7 @@ function animate(timestamp) {
       }
       case 'right': {
         const positionX = (currentColumn*positionWidth+positionWidth/2)*zoom -boardWidth*zoom/2 + moveDeltaDistance;
-        camera.position.x = initialCameraPositionX + positionX;       
+        cameraModule.camera.position.x = cameraModule.initialCameraPositionX + positionX;       
         dirLight.position.x = initialDirLightPositionX + positionX;
         chicken.position.x = positionX; 
 
@@ -644,24 +536,24 @@ function animate(timestamp) {
   }
 
 
-  if (isTopView) {
+  if (cameraModule.isTopView) {
     // Update the top view camera position to follow the chicken
     topViewCameraPosition.x = chicken.position.x;
     topViewCameraPosition.y = chicken.position.y;
 
     // Set the camera position to the updated top view camera position
-    camera.position.copy(topViewCameraPosition);
+    cameraModule.camera.position.copy(topViewCameraPosition);
 
     // Look at the chicken
-    camera.lookAt(chicken.position);
+    cameraModule.camera.lookAt(chicken.position);
   }
 
   // Render the grass before rendering the chicken
-  renderer.render(scene, camera);
+  renderer.render(scene, cameraModule.camera);
 
-  if (!isTopView) {
+  if (!cameraModule.isTopView) {
     // If not in top view, render the chicken again after rendering the grass
-    renderer.render(scene, camera);
+    renderer.render(scene, cameraModule.camera);
   }
 
   
@@ -679,7 +571,7 @@ function animate(timestamp) {
     });
 
   }
-  renderer.render( scene, camera );	
+  renderer.render( scene, cameraModule.camera );	
 }
 
 requestAnimationFrame( animate );
