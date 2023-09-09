@@ -1,8 +1,6 @@
 const counterDOM = document.getElementById('counter');  
 const endDOM = document.getElementById('end');  
-const popup = document.getElementById('popup');
-const resumeButton = document.getElementById('resume-button');
-const quitButton = document.getElementById('quit-button');
+
 
 const scene = new THREE.Scene();
 
@@ -59,8 +57,7 @@ const stepTime = 200; // Miliseconds it takes for the chicken to take a step for
 let lanes;
 let currentLane;
 let currentColumn;
-let gameState = 'playing'; // Initial game state is 'playing'
-let gameOver = false;
+
 
 let previousTimestamp;
 let startMoving;
@@ -469,19 +466,9 @@ document.getElementById('left').addEventListener("click", () => move('left'));
 document.getElementById('right').addEventListener("click", () => move('right'));
 
 window.addEventListener("keydown", event => {
-  if (gameOver){
-    return; // Don't allow movements if the game is over
-  } else{
     if (event.keyCode == '38') {
       // up arrow
       move('forward');
-    }
-    else if(event.key === 'Escape'){
-      if (popup.classList.contains('hidden')) {
-        showPopup();
-      } else {
-        hidePopup();
-      }
     }
     else if (event.keyCode == '40') {
       // down arrow
@@ -498,31 +485,10 @@ window.addEventListener("keydown", event => {
       // right arrow
       move('right');
     }
-  }
-
 });
 
-resumeButton.addEventListener('click', () => {
-  hidePopup();
-  // Resume game logic here
-});
-
-quitButton.addEventListener('click', () => {
-  hidePopup();
-  window.location.href = 'index.html';
-  // Add code to quit the game or navigate to a different page
-});
-
-function showPopup() {
-  popup.classList.remove('hidden');
-}
-
-function hidePopup() {
-  popup.classList.add('hidden');
-}
 
 function move(direction) {
-  if (gameOver) return; // Don't allow movements if the game is over
   const finalPositions = moves.reduce((position,move) => {
     if(move === 'forward') return {lane: position.lane+1, column: position.column};
     if(move === 'backward') return {lane: position.lane-1, column: position.column};
@@ -684,7 +650,6 @@ function animate(timestamp) {
       const carMaxX = vechicle.position.x + vechicleLength*zoom/2;
       if(chickenMaxX > carMinX && chickenMinX < carMaxX) {
         endDOM.style.visibility = 'visible';
-        gameOver = true; // Set the game over flag to true
       }
     });
 
