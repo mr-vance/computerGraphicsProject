@@ -4,56 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="help.css">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100&display=swap" rel="stylesheet">
     <title>Road Cross</title>
 </head>
 <body>
 
-	<div class="container">
-		<h1>Road Cross Adventure</h1>
-        <!-- Background image of the game -->
-        <div class="game-image">
-            <!-- Add any game-related content here -->
-        </div>
-
-        <!-- Buttons on top of the image -->
-        <div class="button-container">
-            <button id="howToPlayBtn">Help</button>
-			    <!-- Create a pop-up card for instructions (hidden by default) -->
-				<div id="popupCard" class="popup-card">
-					<h2>How to Play</h2>
-					<ul>
-						<li>Use the arrow keys to move the character.</li>
-						<li>Use Esc to pause the game</li>
-						<li>Use C to change Camera</li>
-						<!-- Add more instructions here -->
-					</ul>
-
-					<h2>Developers</h2>
-					<p>This game was developed by a group of Computer Science students from Wits University. For more details refer to the <a href="https://github.com/mr-vance/computerGraphicsProject#readme" target="_blank">README</a>.</p>
-					<ol>
-						<li>Nyiko Mthombeni	</li>
-						<li>Nduduzo Shoba	</li>
-						<li>Sibusiso Mfana</li>
-						<li>Faith Mokgalaka	</li>
-						<li>Vance Muchongo	</li>
-						<!-- Add more instructions here -->
-					</ol>
-
-					<h2>Credits</h2>
-					<p>This game was build on top of the code written by <a href="https://codepen.io/HunorMarton/pen/JwWLJo" target="_blank">Hunor Marton</a> </p>
-					<!-- Add a "Close" button to close the pop-up -->
-					<button id="closeBtn">Close</button>
-				</div>
-
-            <a href="game.html"><button id="startGameBtn">Start Game</button></a>
-        </div>
+<div class="container">
+    <h1 style="text-align: center;">Road Cross Adventure</h1>
+    <!-- Background image of the game -->
+    <div class="game-image">
+        <!-- Add any game-related content here -->
     </div>
 
-    <!-- Include your game canvas and other game elements here -->
+    <!-- Buttons on top of the image -->
+    <div class="button-container">
+        <button id="howToPlayBtn">Help</button>
+        <!-- Create a pop-up card for instructions (hidden by default) -->
+        <div id="popupCard" class="popup-card">
+            <h2>How to Play</h2>
+            <ul>
+                <li>Use the arrow keys to move the character.</li>
+                <li>Use Esc to pause the game</li>
+                <li>Use C to change Camera</li>
+                <!-- Add more instructions here -->
+            </ul>
 
-    <script src="help.js"></script>
+            <h2>Developers</h2>
+            <p>This game was developed by a group of Computer Science students from Wits University. For more details refer to the <a href="https://github.com/mr-vance/computerGraphicsProject#readme" target="_blank">README</a>.</p>
+            <ol>
+                <li>Nyiko Mthombeni	</li>
+                <li>Nduduzo Shoba	</li>
+                <li>Sibusiso Mfana</li>
+                <li>Faith Mokgalaka	</li>
+                <li>Vance Muchongo	</li>
+                <!-- Add more instructions here -->
+            </ol>
+
+            <h2>Credits</h2>
+            <p>This game was build on top of the code written by <a href="https://codepen.io/HunorMarton/pen/JwWLJo" target="_blank">Hunor Marton</a> </p>
+            <!-- Add a "Close" button to close the pop-up -->
+            <button id="closeBtn">Close</button>
+        </div>
+
+        <a href="game.html"><button id="startGameBtn">Start Game</button></a>
+    </div>
+</div>
+
+<div id="mobile-message">
+    <p>This game is not available for mobile devices.</p>
+</div>
+
+<div id="overlay"></div> <!-- Add the overlay element -->
+
+<!-- Include your game canvas and other game elements here -->
+
+<script src="help.js"></script>
 </body>
 </html>
