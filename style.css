@@ -1,15 +1,11 @@
-
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
 
 body {
   margin: 0;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 36px;
-  color: aliceblue;
-  font-weight: 500;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 2em;
+  color: white;
 }
-
-
 button {
   outline: none;
   cursor: pointer;
