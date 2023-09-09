@@ -1,6 +1,6 @@
 const counterDOM = document.getElementById('counter');  
 const endDOM = document.getElementById('end');  
-
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const scene = new THREE.Scene();
 
@@ -102,12 +102,12 @@ const addLane = () => {
 const chicken = new Chicken();
 scene.add( chicken );
 
-hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
 scene.add(hemiLight)
 
 const initialDirLightPositionX = -100;
 const initialDirLightPositionY = -100;
-dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
+const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
 dirLight.position.set(initialDirLightPositionX, initialDirLightPositionY, 200);
 dirLight.castShadow = true;
 dirLight.target = chicken;
@@ -125,7 +125,7 @@ dirLight.shadow.camera.bottom = - d;
 // var helper = new THREE.CameraHelper( camera );
 // scene.add(helper)
 
-backLight = new THREE.DirectionalLight(0x000000, .4);
+const backLight = new THREE.DirectionalLight(0x000000, .4);
 backLight.position.set(200, 200, 50);
 backLight.castShadow = true;
 scene.add(backLight)
@@ -301,7 +301,7 @@ function Three() {
   trunk.receiveShadow = true;
   three.add(trunk);
 
-  height = threeHeights[Math.floor(Math.random()*threeHeights.length)];
+  const height = threeHeights[Math.floor(Math.random()*threeHeights.length)];
 
   const crown = new THREE.Mesh(
     new THREE.BoxBufferGeometry( 30*zoom, 30*zoom, height*zoom ), 
