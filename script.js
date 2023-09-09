@@ -43,6 +43,15 @@ function toggleCameraView() {
   }
 }
 
+// Define a variable to track the game's pause state
+let isGamePaused = false;
+const modal = document.getElementById("myModal");
+
+// Function to toggle the modal's visibility
+function toggleModal() {
+    modal.style.display = isGamePaused ? "none" : "block";
+    isGamePaused = !isGamePaused;
+}
 
 const zoom = 2;
 
@@ -470,6 +479,9 @@ window.addEventListener("keydown", event => {
       // up arrow
       move('forward');
     }
+    else if (event.key === "Escape" || event.key === "Esc") {
+      toggleModal();
+    }
     else if (event.keyCode == '40') {
       // down arrow
       move('backward');
@@ -487,6 +499,19 @@ window.addEventListener("keydown", event => {
     }
 });
 
+// Add event listeners for the resume and quit buttons
+const resumeButton = document.getElementById("resumeBtn");
+const quitButton = document.getElementById("quitBtn");
+
+quitButton.addEventListener("click", function () {
+  // Redirect to index.html when quitting the game
+  window.location.href = "index.html";
+});
+
+resumeButton.addEventListener("click", function () {
+  // Hide the modal to resume the game without affecting game state
+  modal.style.display = "none";
+});
 
 function move(direction) {
   const finalPositions = moves.reduce((position,move) => {

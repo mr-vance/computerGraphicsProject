@@ -56,3 +56,58 @@ button {
 #controlls button:first-of-type {
   grid-column: 1/-1;
 }
+
+/* CSS for the modal */
+/* CSS for the modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  max-width: 400px; /* Set the maximum width you want for the modal */
+  width: 100%; /* Make the modal content width 100% within the max-width */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+}
+
+/* Add more styles as needed */
+
+.modal .modal-content p {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: black;
+}
+
+#resumeBtn,
+#quitBtn {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#resumeBtn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+#quitBtn {
+  background-color: #f44336;
+  color: white;
+}
