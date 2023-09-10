@@ -1,11 +1,8 @@
 import { Car } from "./car.js";
-import { Wheel } from "./wheel.js";
 import { Chicken } from "./chicken.js";
-import * as textureModule from "./texture.js"
 import * as cameraModule from "./camera.js"
 import * as lightingModule from "./lighting.js"
-
-
+import { Truck } from "./truck.js";
 
 const counterDOM = document.getElementById('counter');  
 const endDOM = document.getElementById('end'); 
@@ -64,7 +61,6 @@ scene.add(lightingModule.hemiLight)
 
 const laneTypes = ['car', 'truck', 'forest'];
 const laneSpeeds = [2, 2.5, 3];
-const vechicleColors = [0xa52523, 0xbdb638, 0x78b14b];
 const threeHeights = [20,45,60];
 
 const initaliseValues = () => {
@@ -102,59 +98,7 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
 
-function Truck() {
-  const truck = new THREE.Group();
-  const color = vechicleColors[Math.floor(Math.random() * vechicleColors.length)];
 
-
-  const base = new THREE.Mesh(
-    new THREE.BoxBufferGeometry( 100*zoom, 25*zoom, 5*zoom ), 
-    new THREE.MeshLambertMaterial( { color: 0xb4c6fc, flatShading: true } )
-  );
-  base.position.z = 10*zoom;
-  truck.add(base)
-
-  const cargo = new THREE.Mesh(
-    new THREE.BoxBufferGeometry( 75*zoom, 35*zoom, 40*zoom ), 
-    new THREE.MeshPhongMaterial( { color: 0xb4c6fc, flatShading: true } )
-  );
-  cargo.position.x = 15*zoom;
-  cargo.position.z = 30*zoom;
-  cargo.castShadow = true;
-  cargo.receiveShadow = true;
-  truck.add(cargo)
-
-  const cabin = new THREE.Mesh(
-    new THREE.BoxBufferGeometry( 25*zoom, 30*zoom, 30*zoom ), 
-    [
-      new THREE.MeshPhongMaterial( { color, flatShading: true } ), // back
-      new THREE.MeshPhongMaterial( { color, flatShading: true, map: textureModule.truckFrontTexture } ),
-      new THREE.MeshPhongMaterial( { color, flatShading: true, map: textureModule.truckRightSideTexture } ),
-      new THREE.MeshPhongMaterial( { color, flatShading: true, map: textureModule.truckLeftSideTexture } ),
-      new THREE.MeshPhongMaterial( { color, flatShading: true } ), // top
-      new THREE.MeshPhongMaterial( { color, flatShading: true } ) // bottom
-    ]
-  );
-  cabin.position.x = -40*zoom;
-  cabin.position.z = 20*zoom;
-  cabin.castShadow = true;
-  cabin.receiveShadow = true;
-  truck.add( cabin );
-
-  const frontWheel = new Wheel();
-  frontWheel.position.x = -38*zoom;
-  truck.add( frontWheel );
-
-  const middleWheel = new Wheel();
-  middleWheel.position.x = -10*zoom;
-  truck.add( middleWheel );
-
-  const backWheel = new Wheel();
-  backWheel.position.x = 30*zoom;
-  truck.add( backWheel );
-
-  return truck;  
-}
 
 function Three() {
   const three = new THREE.Group();
@@ -332,7 +276,7 @@ window.addEventListener("keydown", event => {
       move('backward');
     }
     else if(event.key === "C" || event.key === "c"){
-      toggleCameraView();
+      cameraModule.toggleCameraView();
     }
     else if (event.keyCode == '37') {
       // left arrow
@@ -436,7 +380,7 @@ function animate(timestamp) {
       case 'backward': {
         positionY = currentLane*positionWidth*zoom - moveDeltaDistance
         cameraModule.camera.position.y = cameraModule.initialCameraPositionY + positionY;
-        lightingModule.dirLight.position.y = cameraModule.lightingModule.initialDirLightPositionY + positionY; 
+        lightingModule.dirLight.position.y = lightingModule.initialDirLightPositionY + positionY; 
         chicken.position.y = positionY;
 
         chicken.position.z = jumpDeltaDistance;

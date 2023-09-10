@@ -14,7 +14,7 @@ camera.position.x = initialCameraPositionX;
 camera.position.z = distance;
 
 // Create a boolean flag to track the camera view
-export const isTopView = false;
+export var isTopView = false;
 
 // Function to toggle between top view and default view
 export function toggleCameraView() {
