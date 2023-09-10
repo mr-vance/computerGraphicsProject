@@ -1,8 +1,8 @@
-import { Car } from "./car.js";
 import { Chicken } from "./chicken.js";
+import { Lane } from "./lane.js";
 import * as cameraModule from "./camera.js"
 import * as lightingModule from "./lighting.js"
-import { Truck } from "./truck.js";
+
 
 const counterDOM = document.getElementById('counter');  
 const endDOM = document.getElementById('end'); 
@@ -25,8 +25,8 @@ const positionWidth = 45;
 const columns = 17;
 const boardWidth = positionWidth*columns;
 
-const stepTime = 200; // Miliseconds it takes for the chicken to take a step forward, backward, left or right
 
+const stepTime = 200; 
 let lanes;
 let currentLane;
 let currentColumn;
@@ -59,9 +59,6 @@ lightingModule.dirLight.target = chicken;
 scene.add(lightingModule.dirLight);
 scene.add(lightingModule.hemiLight)
 
-const laneTypes = ['car', 'truck', 'forest'];
-const laneSpeeds = [2, 2.5, 3];
-const threeHeights = [20,45,60];
 
 const initaliseValues = () => {
   lanes = generateLanes()
@@ -98,154 +95,6 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
 
-
-
-function Three() {
-  const three = new THREE.Group();
-
-  const trunk = new THREE.Mesh(
-    new THREE.BoxBufferGeometry( 15*zoom, 15*zoom, 20*zoom ), 
-    new THREE.MeshPhongMaterial( { color: 0x4d2926, flatShading: true } )
-  );
-  trunk.position.z = 10*zoom;
-  trunk.castShadow = true;
-  trunk.receiveShadow = true;
-  three.add(trunk);
-
-  const height = threeHeights[Math.floor(Math.random()*threeHeights.length)];
-
-  const crown = new THREE.Mesh(
-    new THREE.BoxBufferGeometry( 30*zoom, 30*zoom, height*zoom ), 
-    new THREE.MeshLambertMaterial( { color: 0x7aa21d, flatShading: true } )
-  );
-  crown.position.z = (height/2+20)*zoom;
-  crown.castShadow = true;
-  crown.receiveShadow = false;
-  three.add(crown);
-
-  return three;  
-}
-
-
-
-function Road() {
-  const road = new THREE.Group();
-
-  const createSection = color => new THREE.Mesh(
-    new THREE.PlaneBufferGeometry( boardWidth*zoom, positionWidth*zoom ), 
-    new THREE.MeshPhongMaterial( { color } )
-  );
-
-  const middle = createSection(0x454A59);
-  middle.receiveShadow = true;
-  road.add(middle);
-
-  const left = createSection(0x393D49);
-  left.position.x = - boardWidth*zoom;
-  road.add(left);
-
-  const right = createSection(0x393D49);
-  right.position.x = boardWidth*zoom;
-  road.add(right);
-
-  return road;
-}
-
-function Grass() {
-  const grass = new THREE.Group();
-
-  const createSection = color => new THREE.Mesh(
-    new THREE.BoxBufferGeometry( boardWidth*zoom, positionWidth*zoom, 3*zoom ), 
-    new THREE.MeshPhongMaterial( { color } )
-  );
-
-  const middle = createSection(0xbaf455);
-  middle.receiveShadow = true;
-  grass.add(middle);
-
-  const left = createSection(0x99C846);
-  left.position.x = - boardWidth*zoom;
-  grass.add(left);
-
-  const right = createSection(0x99C846);
-  right.position.x = boardWidth*zoom;
-  grass.add(right);
-
-  grass.position.z = 1.5*zoom;
-  return grass;
-}
-
-function Lane(index) {
-  this.index = index;
-  this.type = index <= 0 ? 'field' : laneTypes[Math.floor(Math.random()*laneTypes.length)];
-
-  switch(this.type) {
-    case 'field': {
-      this.type = 'field';
-      this.mesh = new Grass();
-      break;
-    }
-    case 'forest': {
-      this.mesh = new Grass();
-
-      this.occupiedPositions = new Set();
-      this.threes = [1,2,3,4].map(() => {
-        const three = new Three();
-        let position;
-        do {
-          position = Math.floor(Math.random()*columns);
-        }while(this.occupiedPositions.has(position))
-          this.occupiedPositions.add(position);
-        three.position.x = (position*positionWidth+positionWidth/2)*zoom-boardWidth*zoom/2;
-        this.mesh.add( three );
-        return three;
-      })
-      break;
-    }
-    case 'car' : {
-      this.mesh = new Road();
-      this.direction = Math.random() >= 0.5;
-
-      const occupiedPositions = new Set();
-      this.vechicles = [1,2,3].map(() => {
-        const vechicle = new Car();
-        let position;
-        do {
-          position = Math.floor(Math.random()*columns/2);
-        }while(occupiedPositions.has(position))
-          occupiedPositions.add(position);
-        vechicle.position.x = (position*positionWidth*2+positionWidth/2)*zoom-boardWidth*zoom/2;
-        if(!this.direction) vechicle.rotation.z = Math.PI;
-        this.mesh.add( vechicle );
-        return vechicle;
-      })
-
-      this.speed = laneSpeeds[Math.floor(Math.random()*laneSpeeds.length)];
-      break;
-    }
-    case 'truck' : {
-      this.mesh = new Road();
-      this.direction = Math.random() >= 0.5;
-
-      const occupiedPositions = new Set();
-      this.vechicles = [1,2].map(() => {
-        const vechicle = new Truck();
-        let position;
-        do {
-          position = Math.floor(Math.random()*columns/3);
-        }while(occupiedPositions.has(position))
-          occupiedPositions.add(position);
-        vechicle.position.x = (position*positionWidth*3+positionWidth/2)*zoom-boardWidth*zoom/2;
-        if(!this.direction) vechicle.rotation.z = Math.PI;
-        this.mesh.add( vechicle );
-        return vechicle;
-      })
-
-      this.speed = laneSpeeds[Math.floor(Math.random()*laneSpeeds.length)];
-      break;
-    }
-  }
-}
 
 document.querySelector("#retry").addEventListener("click", () => {
   lanes.forEach(lane => scene.remove( lane.mesh ));

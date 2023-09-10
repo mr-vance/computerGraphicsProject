@@ -3,6 +3,7 @@ import * as textureModule from "./texture.js"
 
 const vechicleColors = [0xa52523, 0xbdb638, 0x78b14b];
 const zoom = 2;
+
 export function Truck() {
     const truck = new THREE.Group();
     const color = vechicleColors[Math.floor(Math.random() * vechicleColors.length)];
