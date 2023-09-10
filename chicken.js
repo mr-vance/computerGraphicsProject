@@ -1,28 +1,28 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-const zoom = 2;
-const chickenSize = 15;
+const zoom = 12;
 
 export function Chicken() {
     const chicken = new THREE.Group();
   
-    const body = new THREE.Mesh(
-      new THREE.BoxGeometry( chickenSize*zoom, chickenSize*zoom, 20*zoom ), 
-      new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } )
-    );
-    body.position.z = 10*zoom;
-    body.castShadow = true;
-    body.receiveShadow = true;
-    chicken.add(body);
-  
-    const rowel = new THREE.Mesh(
-      new THREE.BoxGeometry( 2*zoom, 4*zoom, 2*zoom ), 
-      new THREE.MeshLambertMaterial( { color: 0xF0619A, flatShading: true } )
-    );
-    rowel.position.z = 21*zoom;
-    rowel.castShadow = true;
-    rowel.receiveShadow = false;
-    chicken.add(rowel);
+    // Load the glTF model
+    const loader = new GLTFLoader();
+    loader.load('RobotExpressive.glb', (gltf) => {
+        // Scale and position the model as needed
+        const model = gltf.scene;
+        model.scale.set(zoom, zoom, zoom);
+        
+        // Rotate the model to face away from the camera
+        model.rotation.y = Math.PI; // 180 degrees in radians
+        model.rotation.x = Math.PI/2;
+        
+        // Adjust the model's position so it stands on the ground
+        //const modelHeight = model.geometry.boundingBox.max.y * zoom;
+        model.position.z = (20); // Adjust based on model's height
+        
+        chicken.add(model);
+    });
   
     return chicken;  
-  }
+}
