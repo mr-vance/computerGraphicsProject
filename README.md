@@ -14,6 +14,9 @@
 
 This project is a 3D computer game created using the Three.js graphics framework. It consists of three levels/stages that can be played in a web browser. The game showcases various technical aspects of graphics, including hierarchical modeling, camera and lighting systems, and materials. While meeting these fundamental requirements, the project also emphasizes design, polish, and innovation, allowing for creative game development beyond the default capabilities of HTML and Three.js.
 
+## Install Instructions
+We will be adding more custom instructions on how to setup and run the game on the IDEs but for starters, [this documentation](https://threejs.org/docs/index.html#manual/en/introduction/Installation) will suffice.
+
 
 ## Contributors
 
