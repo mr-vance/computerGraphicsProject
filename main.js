@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Chicken } from "./chicken.js";
+import { Character } from "./character.js";
 import { Lane } from "./lane.js";
 import * as cameraModule from "./camera.js"
 import * as lightingModule from "./lighting.js"
@@ -21,7 +21,7 @@ function toggleModal() {
 }
 
 const zoom = 2;
-const chickenSize = 15;
+const characterSize = 15;
 const positionWidth = 45;
 const columns = 17;
 const boardWidth = positionWidth*columns;
@@ -54,9 +54,9 @@ const addLane = () => {
   lanes.push(lane);
 }
 
-const chicken = new Chicken();
-scene.add( chicken );
-lightingModule.dirLight.target = chicken;
+const character = new Character();
+scene.add( character );
+lightingModule.dirLight.target = character;
 scene.add(lightingModule.dirLight);
 scene.add(lightingModule.hemiLight)
 
@@ -73,8 +73,8 @@ const initaliseValues = () => {
   moves = [];
   stepStartTimestamp;
 
-  chicken.position.x = 0;
-  chicken.position.y = 0;
+  character.position.x = 0;
+  character.position.y = 0;
 
   cameraModule.camera.position.y = cameraModule.initialCameraPositionY;
   cameraModule.camera.position.x = cameraModule.initialCameraPositionX;
@@ -213,35 +213,35 @@ function animate(timestamp) {
       case 'forward': {
         cameraModule.camera.position.y = cameraModule.initialCameraPositionY + positionY; 
         lightingModule.dirLight.position.y = lightingModule.initialDirLightPositionY + positionY; 
-        chicken.position.y = positionY; // initial chicken position is 0
+        character.position.y = positionY; // initial character position is 0
 
-        chicken.position.z = jumpDeltaDistance;
+        character.position.z = jumpDeltaDistance;
         break;
       }
       case 'backward': {
         positionY = currentLane*positionWidth*zoom - moveDeltaDistance
         cameraModule.camera.position.y = cameraModule.initialCameraPositionY + positionY;
         lightingModule.dirLight.position.y = lightingModule.initialDirLightPositionY + positionY; 
-        chicken.position.y = positionY;
+        character.position.y = positionY;
 
-        chicken.position.z = jumpDeltaDistance;
+        character.position.z = jumpDeltaDistance;
         break;
       }
       case 'left': {
         const positionX = (currentColumn*positionWidth+positionWidth/2)*zoom -boardWidth*zoom/2 - moveDeltaDistance;
         cameraModule.camera.position.x = cameraModule.initialCameraPositionX + positionX;     
         lightingModule.dirLight.position.x = lightingModule.initialDirLightPositionX + positionX; 
-        chicken.position.x = positionX; // initial chicken position is 0
-        chicken.position.z = jumpDeltaDistance;
+        character.position.x = positionX; // initial character position is 0
+        character.position.z = jumpDeltaDistance;
         break;
       }
       case 'right': {
         const positionX = (currentColumn*positionWidth+positionWidth/2)*zoom -boardWidth*zoom/2 + moveDeltaDistance;
         cameraModule.camera.position.x = cameraModule.initialCameraPositionX + positionX;       
         lightingModule.dirLight.position.x = lightingModule.initialDirLightPositionX + positionX;
-        chicken.position.x = positionX; 
+        character.position.x = positionX; 
 
-        chicken.position.z = jumpDeltaDistance;
+        character.position.z = jumpDeltaDistance;
         break;
       }
     }
@@ -275,35 +275,35 @@ function animate(timestamp) {
 
 
   if (cameraModule.isTopView) {
-    // Update the top view camera position to follow the chicken
-    topViewCameraPosition.x = chicken.position.x;
-    topViewCameraPosition.y = chicken.position.y;
+    // Update the top view camera position to follow the character
+    topViewCameraPosition.x = character.position.x;
+    topViewCameraPosition.y = character.position.y;
 
     // Set the camera position to the updated top view camera position
     cameraModule.camera.position.copy(topViewCameraPosition);
 
-    // Look at the chicken
-    cameraModule.camera.lookAt(chicken.position);
+    // Look at the character
+    cameraModule.camera.lookAt(character.position);
   }
 
-  // Render the grass before rendering the chicken
+  // Render the grass before rendering the character
   renderer.render(scene, cameraModule.camera);
 
   if (!cameraModule.isTopView) {
-    // If not in top view, render the chicken again after rendering the grass
+    // If not in top view, render the character again after rendering the grass
     renderer.render(scene, cameraModule.camera);
   }
 
   
   // Hit test
   if(lanes[currentLane].type === 'car' || lanes[currentLane].type === 'truck') {
-    const chickenMinX = chicken.position.x - chickenSize*zoom/2;
-    const chickenMaxX = chicken.position.x + chickenSize*zoom/2;
+    const characterMinX = character.position.x - characterSize*zoom/2;
+    const characterMaxX = character.position.x + characterSize*zoom/2;
     const vechicleLength = { car: 60, truck: 105}[lanes[currentLane].type]; 
     lanes[currentLane].vechicles.forEach(vechicle => {
       const carMinX = vechicle.position.x - vechicleLength*zoom/2;
       const carMaxX = vechicle.position.x + vechicleLength*zoom/2;
-      if(chickenMaxX > carMinX && chickenMinX < carMaxX) {
+      if(characterMaxX > carMinX && characterMinX < carMaxX) {
         endDOM.style.visibility = 'visible';
       }
     });

@@ -3,8 +3,8 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const zoom = 12;
 
-export function Chicken() {
-    const chicken = new THREE.Group();
+export function Character() {
+    const character = new THREE.Group();
   
     // Load the glTF model
     const loader = new GLTFLoader();
@@ -21,8 +21,8 @@ export function Chicken() {
         //const modelHeight = model.geometry.boundingBox.max.y * zoom;
         model.position.z = (20); // Adjust based on model's height
         
-        chicken.add(model);
+        character.add(model);
     });
   
-    return chicken;  
+    return character;  
 }
