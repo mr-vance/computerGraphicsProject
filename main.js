@@ -95,7 +95,6 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
 
-
 document.querySelector("#retry").addEventListener("click", () => {
   lanes.forEach(lane => scene.remove( lane.mesh ));
   initaliseValues();
@@ -103,39 +102,31 @@ document.querySelector("#retry").addEventListener("click", () => {
 });
 
 
-
-document.getElementById('forward').addEventListener("click", () => move('forward'));
-
-document.getElementById('backward').addEventListener("click", () => move('backward'));
-
-document.getElementById('left').addEventListener("click", () => move('left'));
-
-document.getElementById('right').addEventListener("click", () => move('right'));
-
 window.addEventListener("keydown", event => {
-    if (event.keyCode == '38') {
-      // up arrow
-      move('forward');
-    }
-    else if (event.key === "Escape" || event.key === "Esc") {
-      toggleModal();
-    }
-    else if (event.keyCode == '40') {
-      // down arrow
-      move('backward');
-    }
-    else if(event.key === "C" || event.key === "c"){
-      cameraModule.toggleCameraView();
-    }
-    else if (event.keyCode == '37') {
-      // left arrow
-      move('left');
-    }
-    else if (event.keyCode == '39') {
-      // right arrow
-      move('right');
-    }
+  if (event.key === 'ArrowUp') {
+    // up arrow
+    move('forward');
+  }
+  else if (event.key === "Escape" || event.key === "Esc") {
+    toggleModal();
+  }
+  else if (event.key === 'ArrowDown') {
+    // down arrow
+    move('backward');
+  }
+  else if(event.key === "c" || event.key === "C"){
+    cameraModule.toggleCameraView();
+  }
+  else if (event.key === 'ArrowLeft') {
+    // left arrow
+    move('left');
+  }
+  else if (event.key === 'ArrowRight') {
+    // right arrow
+    move('right');
+  }
 });
+
 
 // Add event listeners for the resume and quit buttons
 const resumeButton = document.getElementById("resumeBtn");
