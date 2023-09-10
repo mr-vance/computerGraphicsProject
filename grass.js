@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 const zoom = 2;
 const positionWidth = 45;
 const columns = 17;
@@ -7,7 +9,7 @@ export function Grass() {
     const grass = new THREE.Group();
   
     const createSection = color => new THREE.Mesh(
-      new THREE.BoxBufferGeometry( boardWidth*zoom, positionWidth*zoom, 3*zoom ), 
+      new THREE.BoxGeometry( boardWidth*zoom, positionWidth*zoom, 3*zoom ), 
       new THREE.MeshPhongMaterial( { color } )
     );
   

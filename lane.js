@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import { Truck } from "./truck.js";
 import { Car } from "./car.js";
 import { Grass } from "./grass.js";

@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 export function Texture(width, height, rects) {
     const canvas = document.createElement( "canvas" );
     canvas.width = width;

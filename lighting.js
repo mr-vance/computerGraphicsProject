@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 
 export const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
 

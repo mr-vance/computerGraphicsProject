@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import { Texture } from "./texture.js";
 import { Wheel } from "./wheel.js";
 
@@ -15,7 +16,7 @@ const carLeftSideTexture = new Texture(110,40,[{x: 10, y: 10, w: 50, h: 30 }, {x
     const color = vechicleColors[Math.floor(Math.random() * vechicleColors.length)];
     
     const main = new THREE.Mesh(
-      new THREE.BoxBufferGeometry( 60*zoom, 30*zoom, 15*zoom ), 
+      new THREE.BoxGeometry( 60*zoom, 30*zoom, 15*zoom ), 
       new THREE.MeshPhongMaterial( { color, flatShading: true } )
     );
     main.position.z = 12*zoom;
@@ -24,7 +25,7 @@ const carLeftSideTexture = new Texture(110,40,[{x: 10, y: 10, w: 50, h: 30 }, {x
     car.add(main)
     
     const cabin = new THREE.Mesh(
-      new THREE.BoxBufferGeometry( 33*zoom, 24*zoom, 12*zoom ), 
+      new THREE.BoxGeometry( 33*zoom, 24*zoom, 12*zoom ), 
       [
         new THREE.MeshPhongMaterial( { color: 0xcccccc, flatShading: true, map: carBackTexture } ),
         new THREE.MeshPhongMaterial( { color: 0xcccccc, flatShading: true, map: carFrontTexture } ),

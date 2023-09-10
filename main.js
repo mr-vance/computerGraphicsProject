@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import { Chicken } from "./chicken.js";
 import { Lane } from "./lane.js";
 import * as cameraModule from "./camera.js"

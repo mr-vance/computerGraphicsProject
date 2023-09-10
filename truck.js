@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import { Wheel } from "./wheel.js";
 import * as textureModule from "./texture.js"
 
@@ -10,14 +11,14 @@ export function Truck() {
   
   
     const base = new THREE.Mesh(
-      new THREE.BoxBufferGeometry( 100*zoom, 25*zoom, 5*zoom ), 
+      new THREE.BoxGeometry( 100*zoom, 25*zoom, 5*zoom ), 
       new THREE.MeshLambertMaterial( { color: 0xb4c6fc, flatShading: true } )
     );
     base.position.z = 10*zoom;
     truck.add(base)
   
     const cargo = new THREE.Mesh(
-      new THREE.BoxBufferGeometry( 75*zoom, 35*zoom, 40*zoom ), 
+      new THREE.BoxGeometry( 75*zoom, 35*zoom, 40*zoom ), 
       new THREE.MeshPhongMaterial( { color: 0xb4c6fc, flatShading: true } )
     );
     cargo.position.x = 15*zoom;
@@ -27,7 +28,7 @@ export function Truck() {
     truck.add(cargo)
   
     const cabin = new THREE.Mesh(
-      new THREE.BoxBufferGeometry( 25*zoom, 30*zoom, 30*zoom ), 
+      new THREE.BoxGeometry( 25*zoom, 30*zoom, 30*zoom ), 
       [
         new THREE.MeshPhongMaterial( { color, flatShading: true } ), // back
         new THREE.MeshPhongMaterial( { color, flatShading: true, map: textureModule.truckFrontTexture } ),

@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 const zoom = 2;
 const positionWidth = 45;
 const columns = 17;
@@ -8,7 +9,7 @@ export function Road() {
   const road = new THREE.Group();
 
   const createSection = color => new THREE.Mesh(
-    new THREE.PlaneBufferGeometry( boardWidth*zoom, positionWidth*zoom ), 
+    new THREE.PlaneGeometry( boardWidth*zoom, positionWidth*zoom ), 
     new THREE.MeshPhongMaterial( { color } )
   );
 
