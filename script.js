@@ -1,7 +1,9 @@
 import { Car } from "./car.js";
 import { Wheel } from "./wheel.js";
+import { Chicken } from "./chicken.js";
 import * as textureModule from "./texture.js"
 import * as cameraModule from "./camera.js"
+import * as lightingModule from "./lighting.js"
 
 
 
@@ -21,9 +23,7 @@ function toggleModal() {
 }
 
 const zoom = 2;
-
 const chickenSize = 15;
-
 const positionWidth = 45;
 const columns = 17;
 const boardWidth = positionWidth*columns;
@@ -58,34 +58,9 @@ const addLane = () => {
 
 const chicken = new Chicken();
 scene.add( chicken );
-
-const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
-scene.add(hemiLight)
-
-const initialDirLightPositionX = -100;
-const initialDirLightPositionY = -100;
-const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
-dirLight.position.set(initialDirLightPositionX, initialDirLightPositionY, 200);
-dirLight.castShadow = true;
-dirLight.target = chicken;
-scene.add(dirLight);
-
-dirLight.shadow.mapSize.width = 2048;
-dirLight.shadow.mapSize.height = 2048;
-var d = 500;
-dirLight.shadow.camera.left = - d;
-dirLight.shadow.camera.right = d;
-dirLight.shadow.camera.top = d;
-dirLight.shadow.camera.bottom = - d;
-
-// var helper = new THREE.CameraHelper( dirLight.shadow.camera );
-// var helper = new THREE.CameraHelper( camera );
-// scene.add(helper)
-
-const backLight = new THREE.DirectionalLight(0x000000, .4);
-backLight.position.set(200, 200, 50);
-backLight.castShadow = true;
-scene.add(backLight)
+lightingModule.dirLight.target = chicken;
+scene.add(lightingModule.dirLight);
+scene.add(lightingModule.hemiLight)
 
 const laneTypes = ['car', 'truck', 'forest'];
 const laneSpeeds = [2, 2.5, 3];
@@ -110,8 +85,8 @@ const initaliseValues = () => {
   cameraModule.camera.position.y = cameraModule.initialCameraPositionY;
   cameraModule.camera.position.x = cameraModule.initialCameraPositionX;
 
-  dirLight.position.x = initialDirLightPositionX;
-  dirLight.position.y = initialDirLightPositionY;
+  lightingModule.dirLight.position.x = lightingModule.initialDirLightPositionX;
+  lightingModule.dirLight.position.y = lightingModule.initialDirLightPositionY;
 }
 
 initaliseValues();
@@ -207,29 +182,7 @@ function Three() {
   return three;  
 }
 
-function Chicken() {
-  const chicken = new THREE.Group();
 
-  const body = new THREE.Mesh(
-    new THREE.BoxBufferGeometry( chickenSize*zoom, chickenSize*zoom, 20*zoom ), 
-    new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } )
-  );
-  body.position.z = 10*zoom;
-  body.castShadow = true;
-  body.receiveShadow = true;
-  chicken.add(body);
-
-  const rowel = new THREE.Mesh(
-    new THREE.BoxBufferGeometry( 2*zoom, 4*zoom, 2*zoom ), 
-    new THREE.MeshLambertMaterial( { color: 0xF0619A, flatShading: true } )
-  );
-  rowel.position.z = 21*zoom;
-  rowel.castShadow = true;
-  rowel.receiveShadow = false;
-  chicken.add(rowel);
-
-  return chicken;  
-}
 
 function Road() {
   const road = new THREE.Group();
@@ -470,11 +423,11 @@ function animate(timestamp) {
     const moveDeltaTime = timestamp - stepStartTimestamp;
     const moveDeltaDistance = Math.min(moveDeltaTime/stepTime,1)*positionWidth*zoom;
     const jumpDeltaDistance = Math.sin(Math.min(moveDeltaTime/stepTime,1)*Math.PI)*8*zoom;
+    var positionY = currentLane*positionWidth*zoom + moveDeltaDistance;
     switch(moves[0]) {
       case 'forward': {
-        const positionY = currentLane*positionWidth*zoom + moveDeltaDistance;
         cameraModule.camera.position.y = cameraModule.initialCameraPositionY + positionY; 
-        dirLight.position.y = initialDirLightPositionY + positionY; 
+        lightingModule.dirLight.position.y = lightingModule.initialDirLightPositionY + positionY; 
         chicken.position.y = positionY; // initial chicken position is 0
 
         chicken.position.z = jumpDeltaDistance;
@@ -483,7 +436,7 @@ function animate(timestamp) {
       case 'backward': {
         positionY = currentLane*positionWidth*zoom - moveDeltaDistance
         cameraModule.camera.position.y = cameraModule.initialCameraPositionY + positionY;
-        dirLight.position.y = cameraModule.initialDirLightPositionY + positionY; 
+        lightingModule.dirLight.position.y = cameraModule.lightingModule.initialDirLightPositionY + positionY; 
         chicken.position.y = positionY;
 
         chicken.position.z = jumpDeltaDistance;
@@ -492,7 +445,7 @@ function animate(timestamp) {
       case 'left': {
         const positionX = (currentColumn*positionWidth+positionWidth/2)*zoom -boardWidth*zoom/2 - moveDeltaDistance;
         cameraModule.camera.position.x = cameraModule.initialCameraPositionX + positionX;     
-        dirLight.position.x = initialDirLightPositionX + positionX; 
+        lightingModule.dirLight.position.x = lightingModule.initialDirLightPositionX + positionX; 
         chicken.position.x = positionX; // initial chicken position is 0
         chicken.position.z = jumpDeltaDistance;
         break;
@@ -500,7 +453,7 @@ function animate(timestamp) {
       case 'right': {
         const positionX = (currentColumn*positionWidth+positionWidth/2)*zoom -boardWidth*zoom/2 + moveDeltaDistance;
         cameraModule.camera.position.x = cameraModule.initialCameraPositionX + positionX;       
-        dirLight.position.x = initialDirLightPositionX + positionX;
+        lightingModule.dirLight.position.x = lightingModule.initialDirLightPositionX + positionX;
         chicken.position.x = positionX; 
 
         chicken.position.z = jumpDeltaDistance;
